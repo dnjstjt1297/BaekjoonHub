@@ -2,16 +2,6 @@
 import java.util.Scanner;
 import java.io.FileInputStream;
 
-class Location {
-	char type;
-	int idx;
-	public Location(char type, int idx) {
-		this.type = type;
-		this.idx = idx;
-	}
-	
-}
-
 class Solution {
 	public static void main(String args[]) throws Exception	{
 		
