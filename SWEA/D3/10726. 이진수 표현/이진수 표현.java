@@ -25,14 +25,12 @@ class Solution {
 			int tmp = 1;
 			tmp=tmp<<N;
 			tmp-=1;
-			boolean is_answer = false;
 			if((tmp&M)==tmp) {
-				is_answer = true;
-			}
-			if(is_answer)
 				System.out.println("#"+test_case+" ON");
-			else
+			}
+			else {
 				System.out.println("#"+test_case+" OFF");
+			}
 		}
 	}
 	
