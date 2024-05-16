@@ -22,8 +22,6 @@ class Solution {
 		for(int test_case = 1; test_case <= T; test_case++) {
 			int N = sc.nextInt();
 			int M = sc.nextInt();
-			String result = "";
-			int length = 0;
 			int tmp = 1;
 			tmp=tmp<<N;
 			tmp-=1;
@@ -31,7 +29,6 @@ class Solution {
 			if((tmp&M)==tmp) {
 				is_answer = true;
 			}
-			
 			if(is_answer)
 				System.out.println("#"+test_case+" ON");
 			else
