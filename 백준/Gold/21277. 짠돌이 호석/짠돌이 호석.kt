@@ -53,6 +53,12 @@ fun findMinArea(puzzle1: Array<IntArray>, puzzle2: Array<IntArray>,
             minArea = Math.min(minArea,findArea(mergePuzzle,N1+N2,M1+M2))
         }
     }
+    for(i in 0..N2){
+        for(j in 0..M2){
+            val mergePuzzle = merge(puzzle2,puzzle1,N2,M2,N1,M1,i,j)
+            minArea = Math.min(minArea,findArea(mergePuzzle,N1+N2,M1+M2))
+        }
+    }
 
     val rocatePuzzle1 = rocate(N1,M1,puzzle1)
     findMinArea(rocatePuzzle1,puzzle2,M1,N1,N2,M2,cnt+1)
