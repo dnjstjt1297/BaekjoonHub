@@ -56,6 +56,8 @@ fun findMinArea(puzzle1: Array<IntArray>, puzzle2: Array<IntArray>,
 
     val rocatePuzzle1 = rocate(N1,M1,puzzle1)
     findMinArea(rocatePuzzle1,puzzle2,M1,N1,N2,M2,cnt+1)
+    val rocatePuzzle2 = rocate(N2,M2,puzzle2)
+    findMinArea(puzzle1,rocatePuzzle2,N1,M1,M2,N2,cnt+1)
 }
 
 
