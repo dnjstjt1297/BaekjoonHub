@@ -36,6 +36,12 @@ public class Main {
     public static void insert(HashMap<String,Integer> DB, String name, Integer value){
         if(DB.containsKey(name)) System.out.println(0);
         else{
+            for(String s : DB.keySet()){
+                if(DB.get(s).equals(value)){
+                    System.out.println(0);
+                    return;
+                }
+            }
             DB.put(name,value);
             System.out.println(1);
         }
