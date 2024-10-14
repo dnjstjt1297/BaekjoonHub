@@ -1,12 +1,21 @@
 import java.util.*;
 import java.io.*;
 
+class Entry{
+    String name;
+    int value;
+    public Entry(String name, int value){
+        this.name = name;
+        this.value = value;
+    }
+}
+
 public class Main {
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int Q = Integer.parseInt(br.readLine());
 
-        HashMap<String, Integer> DB = init();
+        ArrayList<Entry> DB = init();
 
         for(int i=0;i<Q;i++){
             String[] command = br.readLine().split(" ");
@@ -29,57 +38,58 @@ public class Main {
         }
 
     }
-    public static HashMap<String, Integer> init(){
-        return new HashMap<String,Integer>();
+    public static ArrayList<Entry> init(){
+        return new ArrayList<Entry>();
     }
 
-    public static void insert(HashMap<String,Integer> DB, String name, Integer value){
-        if(DB.containsKey(name)) System.out.println(0);
-        else{
-            for(String s : DB.keySet()){
-                if(DB.get(s).equals(value)){
-                    System.out.println(0);
-                    return;
-                }
+    public static void insert(ArrayList<Entry> DB, String name, Integer value){
+        for(Entry e: DB){
+            if(e.name.equals(name) || e.value == value){
+                System.out.println(0);
+                return;
             }
-            DB.put(name,value);
-            System.out.println(1);
         }
+        DB.add(new Entry(name,value));
+        System.out.println(1);
     }
 
-    public static void delete(HashMap<String,Integer> DB, String name){
-        if(!DB.containsKey(name)) System.out.println(0);
-        else{
-            System.out.println(DB.get(name));
-            DB.remove(name);
+    public static void delete(ArrayList<Entry> DB, String name){
+        for(Entry e: DB){
+            if(e.name.equals(name)){
+                System.out.println(1);
+                DB.remove(e);
+                return;
+            }
         }
+        System.out.println(0);
     }
 
-    public static void rank(HashMap<String,Integer> DB, Integer k){
-        List<String> names = new ArrayList<>(DB.keySet());
-        
-        if(names.size()<k){
+    public static void rank(ArrayList<Entry> DB, Integer k){
+        Collections.sort(DB, new Comparator<Entry>(){
+            @Override
+            public int compare(Entry o1, Entry o2){
+                return o1.value-o2.value;
+            }
+        });
+        if(DB.size()<k){
             System.out.println("None");
             return;
         }
-
-        Collections.sort(names, new Comparator<String>(){
-            @Override
-            public int compare(String o1, String o2){
-                return DB.get(o1)-DB.get(o2);
-            }
-        });
-
-        System.out.println(names.get(k-1));
+        System.out.println(DB.get(k-1).name);
         return;
     }
     
-    public static void sum(HashMap<String,Integer> DB, Integer k){
-        List<String> names = new ArrayList<>(DB.keySet());
-        
+    public static void sum(ArrayList<Entry> DB, Integer k){
+        Collections.sort(DB, new Comparator<Entry>(){
+            @Override
+            public int compare(Entry o1, Entry o2){
+                return o1.value-o2.value;
+            }
+        });
         long result = 0;
-        for(String name: DB.keySet()){
-            if(DB.get(name)<=k) result+=DB.get(name);
+        for(Entry e : DB){
+            if(e.value<=k) result+=e.value;
+            else break;
         }
 
         System.out.println(result);
