@@ -60,6 +60,7 @@ public class Main {
             }
     
             int b = makeRock(warriers, N, r[0], r[1]);
+            
             int[] ac = moveWarries(warriers,N, r[0], r[1]);
             
             System.out.println(ac[0]+" "+b+" "+ac[1]);
@@ -124,7 +125,7 @@ public class Main {
                     return o1.y-o2.y;
                 }
                 else if(compase == 'L'){
-                    return o2.y-o2.y;
+                    return o2.y-o1.y;
                 }
                 return 0;
             }
@@ -280,6 +281,8 @@ public class Main {
         else if(maxCnt==rCnt){
             return countRock(warriers, N, mx, my,'R',true);
         }
+
+        
 
         return maxCnt;
     }
