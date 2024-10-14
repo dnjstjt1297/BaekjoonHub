@@ -206,7 +206,7 @@ public class Main {
                     }
                     else if(w.x<mx){
                         for(int j=0;j<=w.y-i;j++){
-                            if(w.y-j>=0) sight[w.x-j][i] = false;
+                            if(w.x-j>=0) sight[w.x-j][i] = false;
                         }
                     }
                 }
@@ -237,7 +237,7 @@ public class Main {
                     }
                     else if(w.x<mx){
                         for(int j=0;j<=i-w.y;j++){
-                            if(w.y-j>=0) sight[w.x-j][i] = false;
+                            if(w.x-j>=0) sight[w.x-j][i] = false;
                         }
                     }
                 }
