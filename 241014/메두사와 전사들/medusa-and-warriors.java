@@ -148,7 +148,7 @@ public class Main {
                     if(w.y==my) sight[i][w.y] = false;
                     if(w.y>my){
                         for(int j=0;j<=w.x-i;j++){
-                            if(w.y-j<N) sight[i][w.y+j] = false;
+                            if(w.y+j<N) sight[i][w.y+j] = false;
                         }
                     }
                     else if(w.y<my){
@@ -178,7 +178,7 @@ public class Main {
                     if(w.y==my) sight[i][w.y] = false;
                     if(w.y>my){
                         for(int j=0;j<=i-w.x;j++){
-                            if(w.y-j<N) sight[i][w.y+j] = false;
+                            if(w.y+j<N) sight[i][w.y+j] = false;
                         }
                     }
                     else if(w.y<my){
