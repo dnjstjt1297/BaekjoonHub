@@ -148,7 +148,7 @@ public class Main {
                     if(w.y==my) sight[i][w.y] = false;
                     if(w.y>my){
                         for(int j=0;j<=w.x-i;j++){
-                            if(w.y-j<=N) sight[i][w.y+j] = false;
+                            if(w.y-j<N) sight[i][w.y+j] = false;
                         }
                     }
                     else if(w.y<my){
@@ -178,7 +178,7 @@ public class Main {
                     if(w.y==my) sight[i][w.y] = false;
                     if(w.y>my){
                         for(int j=0;j<=i-w.x;j++){
-                            if(w.y-j<=N) sight[i][w.y+j] = false;
+                            if(w.y-j<N) sight[i][w.y+j] = false;
                         }
                     }
                     else if(w.y<my){
@@ -208,7 +208,7 @@ public class Main {
                     if(w.x==mx) sight[w.x][i] = false;
                     if(w.x>mx){
                         for(int j=0;j<=w.y-i;j++){
-                            if(w.x+j<=N) sight[w.x+j][i] = false;
+                            if(w.x+j<N) sight[w.x+j][i] = false;
                         }
                     }
                     else if(w.x<mx){
@@ -239,7 +239,7 @@ public class Main {
                     if(w.x==mx) sight[w.x][i] = false;
                     if(w.x>mx){
                         for(int j=0;j<=i-w.y;j++){
-                            if(w.x+j<=N) sight[w.x+j][i] = false;
+                            if(w.x+j<N) sight[w.x+j][i] = false;
                         }
                     }
                     else if(w.x<mx){
