@@ -16,6 +16,7 @@ class Warrier{
 public class Main {
     static int[] dx = {0,0,1,-1};
     static int[] dy = {1,-1,0,0};
+    static boolean[][] sight;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -46,7 +47,8 @@ public class Main {
 
         ArrayList<int[]> route = findRouteOfMedusa(board,N,sx,sy,ex,ey);
         
-
+        sight = new boolean[N][N];
+        
         for(int[] r : route){
             if(r[0]== ex && r[1] == ey){
                 System.out.println(0);
@@ -55,9 +57,10 @@ public class Main {
             for(Warrier w: warriers){
                 if(w.x == r[0] && w.y== r[1]) w.liveStatus = false;
             }
-            
+    
             int b = makeRock(warriers, N, r[0], r[1]);
-            int[] ac = moveWarries(warriers, r[0], r[1]);
+            int[] ac = moveWarries(warriers,N, r[0], r[1]);
+            
             System.out.println(ac[0]+" "+b+" "+ac[1]);
         }
         
@@ -95,106 +98,155 @@ public class Main {
         return route;
     }
 
-    public static int countRock(Warrier[] warriers, int N, int mx, int my, char compase, boolean isMakeRock){
-        int result = 0;
-        
-        int left = 0;
-        int right = N-1;
-        boolean centerStatus = true;
 
+    public static int countRock(Warrier[] warriers, int N, int mx, int my, char compase, boolean isMakeRock){
+        for(int i=0;i<N;i++){
+            for(int j=0;j<N;j++) sight[i][j] = false;
+        }
+        int rockCnt = 0;
         Arrays.sort(warriers, new Comparator<Warrier>(){
             @Override
             public int compare(Warrier o1, Warrier o2){
-                if(compase == 'D')
+                if(compase == 'D'){
                     return o1.x-o2.x;
-                else if(compase == 'U')
+                }
+                else if(compase == 'U') {
                     return o2.x-o1.x;
-                else if(compase == 'R')
+                }
+                else if(compase == 'R'){
                     return o1.y-o2.y;
-                else if(compase == 'L')
-                    return o2.y-o1.y;
+                }
+                else if(compase == 'L'){
+                    return o2.y-o2.y;
+                }
                 return 0;
             }
         });
 
-        for(Warrier w : warriers){
-            if(!w.liveStatus) continue;
-            if(compase == 'D'){
-                if(w.x<=mx) continue;
-                if(w.y<my && w.y>=left){
-                    result++;
-                    if(isMakeRock) w.rockStatus = true;
-                    left = w.y+1;
-                }
-                else if(w.y>my && w.y<=right){
-                    result++;
-                    if(isMakeRock) w.rockStatus = true;
-                    right = w.y-1;
-                }
-                else if(w.y==my && centerStatus){
-                    result++;
-                    if(isMakeRock) w.rockStatus = true;
-                    centerStatus = false;
+        if(compase == 'U'){
+            for(int i=mx-1; i>=0; i--){
+                for(int j=0;j<=mx-i;j++){
+                    if(my+j<N) sight[i][my+j] = true;
+                    if(my-j>=0) sight[i][my-j] = true;
                 }
             }
-            else if(compase == 'U'){
-                if(w.x>=mx) continue;
 
-                if(w.y<my && w.y>=left){
-                    result++;
-                    if(isMakeRock) w.rockStatus = true;
-                    left = w.y+1;
-                }
-                else if(w.y>my && w.y<=right){
-                    result++;
-                    if(isMakeRock) w.rockStatus = true;
-                    right = w.y-1;
-                }
-                else if(w.y==my && centerStatus){
-                    result++;
-                    if(isMakeRock) w.rockStatus = true;
-                    centerStatus = false;
-                }
-            }
-            else if(compase == 'R'){
-                if(w.y<=my) continue;
-                if(w.x<mx && w.x>=left){
-                    result++;
-                    if(isMakeRock) w.rockStatus = true;
-                    left = w.y+1;
-                }
-                else if(w.x>mx && w.x<=right){
-                    result++;
-                    if(isMakeRock) w.rockStatus = true;
-                    right = w.y-1;
-                }
-                else if(w.x==mx && centerStatus){
-                    result++;
-                    if(isMakeRock) w.rockStatus = true;
-                    centerStatus = false;
-                }
-            }
-            else if(compase == 'L'){
-                if(w.y>=my) continue;
+            for(Warrier w : warriers){
+                if(!w.liveStatus) continue;
+                if(!sight[w.x][w.y]) continue;
+                rockCnt++;
+                if(isMakeRock) w.rockStatus = true;
 
-                if(w.x<mx && w.x>=left){
-                    result++;
-                    if(isMakeRock) w.rockStatus = true;
-                    left = w.y+1;
-                }
-                else if(w.x>mx && w.x<=right){
-                    result++;
-                    if(isMakeRock) w.rockStatus = true;
-                    right = w.y-1;
-                }
-                else if(w.x==mx && centerStatus){
-                    result++;
-                    if(isMakeRock) w.rockStatus = true;
-                    centerStatus = false;
+                for(int i = w.x-1;i>=0;i--){
+                    if(w.y==my) sight[i][w.y] = false;
+                    if(w.y>my){
+                        for(int j=0;j<=w.x-i;j++){
+                            if(w.y-j<=N) sight[i][w.y+j] = false;
+                        }
+                    }
+                    else if(w.y<my){
+                        for(int j=0;j<=w.x-i;j++){
+                            if(w.y-j>=0) sight[i][w.y-j] = false;
+                        }
+                    }
                 }
             }
         }
-        return result;
+
+        if(compase == 'D'){
+            for(int i=mx+1; i<N; i++){
+                for(int j=0;j<=i-mx;j++){
+                    if(my+j<N) sight[i][my+j] = true;
+                    if(my-j>=0) sight[i][my-j] = true;
+                }
+            }
+
+            for(Warrier w : warriers){
+                if(!w.liveStatus) continue;
+                if(!sight[w.x][w.y]) continue;
+                rockCnt++;
+                if(isMakeRock) w.rockStatus = true;
+
+                for(int i = w.x+1;i<N;i++){
+                    if(w.y==my) sight[i][w.y] = false;
+                    if(w.y>my){
+                        for(int j=0;j<=i-w.x;j++){
+                            if(w.y-j<=N) sight[i][w.y+j] = false;
+                        }
+                    }
+                    else if(w.y<my){
+                        for(int j=0;j<=i-w.x;j++){
+                            if(w.y-j>=0) sight[i][w.y-j] = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        if(compase == 'L'){
+            for(int i=my-1; i>=0; i--){
+                for(int j=0;j<=my-i;j++){
+                    if(mx+j<N) sight[mx+j][i] = true;
+                    if(mx-j>=0) sight[mx-j][i] = true;
+                }
+            }
+
+            for(Warrier w : warriers){
+                if(!w.liveStatus) continue;
+                if(!sight[w.x][w.y]) continue;
+                rockCnt++;
+                if(isMakeRock) w.rockStatus = true;
+
+                for(int i = w.y-1;i>=0;i--){
+                    if(w.x==mx) sight[w.x][i] = false;
+                    if(w.x>mx){
+                        for(int j=0;j<=w.y-i;j++){
+                            if(w.x+j<=N) sight[w.x+j][i] = false;
+                        }
+                    }
+                    else if(w.x<mx){
+                        for(int j=0;j<=w.y-i;j++){
+                            if(w.y-j>=0) sight[w.x-j][i] = false;
+                        }
+                    }
+                }
+            }
+            
+        }
+
+        if(compase == 'R'){
+            for(int i=my+1; i<N; i++){
+                for(int j=0;j<=i-my;j++){
+                    if(mx+j<N) sight[mx+j][i] = true;
+                    if(mx-j>=0) sight[mx-j][i] = true;
+                }
+            }
+            
+            for(Warrier w : warriers){
+                if(!w.liveStatus) continue;
+                if(!sight[w.x][w.y]) continue;
+                rockCnt++;
+                if(isMakeRock) w.rockStatus = true;
+
+                for(int i = w.y+1;i<N;i++){
+                    if(w.x==mx) sight[w.x][i] = false;
+                    if(w.x>mx){
+                        for(int j=0;j<=i-w.y;j++){
+                            if(w.x+j<=N) sight[w.x+j][i] = false;
+                        }
+                    }
+                    else if(w.x<mx){
+                        for(int j=0;j<=i-w.y;j++){
+                            if(w.y-j>=0) sight[w.x-j][i] = false;
+                        }
+                    }
+                }
+            }
+            
+        }
+
+
+        return rockCnt;
     }
 
     public static int makeRock(Warrier[] warriers, int N, int mx, int my){
@@ -210,26 +262,22 @@ public class Main {
         maxCnt = Math.max(maxCnt,rCnt);
 
         if(maxCnt==uCnt){
-            countRock(warriers, N, mx, my,'U',true);
-            return maxCnt;
+            return countRock(warriers, N, mx, my,'U',true);
         }
         else if(maxCnt==dCnt){
-            countRock(warriers, N, mx, my,'D',true);
-            return maxCnt;
+            return countRock(warriers, N, mx, my,'D',true);
         }
         else if(maxCnt==lCnt){
-            countRock(warriers, N, mx, my,'L',true);
-            return maxCnt;
+            return countRock(warriers, N, mx, my,'L',true);
         }
         else if(maxCnt==rCnt){
-            countRock(warriers, N, mx, my,'R',true);
-            return maxCnt;
+            return countRock(warriers, N, mx, my,'R',true);
         }
 
         return maxCnt;
     }
 
-    static public int[] moveWarries(Warrier[] warriers, int mx, int my){
+    static public int[] moveWarries(Warrier[] warriers,int N, int mx, int my){
         
         int moveCnt = 0;
         int deadCnt = 0;
@@ -239,14 +287,25 @@ public class Main {
                 w.rockStatus = false;
                 continue;
             }
+
             //one move
-            
-            
-            if(w.x>mx) w.x--;
-            else if(w.x<mx) w.x++;
-            else if(w.y>my) w.y--;
-            else if(w.y<my) w.y++;
+            if(w.x>mx && w.x-1>=0 && !sight[w.x-1][w.y]){
+                w.x--;
                 moveCnt++;
+            }
+            else if(w.x<mx && w.x+1<N && !sight[w.x+1][w.y]){
+                w.x++;
+                moveCnt++;
+            }
+            else if(w.y>my && w.y-1>=0 && !sight[w.x][w.y-1]){
+                w.y--;
+                moveCnt++;
+            }
+            else if(w.y<my && w.y+1<N && !sight[w.x][w.y+1]){
+                w.y++;
+                moveCnt++;
+            }
+            
             if(w.x == mx && w.y == my) {
                 w.liveStatus = false;
                 deadCnt++;
@@ -254,11 +313,22 @@ public class Main {
             }
 
             //two move
-            if(w.y>my) w.y--;
-            else if(w.y<my) w.y++;
-            else if(w.x>mx) w.x--;
-            else if(w.x<mx) w.x++;
-            moveCnt++;    
+            if(w.y>my && w.y-1>=0 && !sight[w.x][w.y-1]){
+                w.y--;
+                moveCnt++;
+            }
+            else if(w.y<my && w.y+1<N && !sight[w.x][w.y+1]){
+                w.y++;
+                moveCnt++;
+            }
+            else if(w.x>mx && w.x-1>=0 && !sight[w.x-1][w.y]){
+                w.x--;
+                moveCnt++;
+            }
+            else if(w.x<mx && w.x+1<N && !sight[w.x+1][w.y]){
+                w.x++;
+                moveCnt++;
+            }   
             if(w.x == mx && w.y == my) {
                 w.liveStatus = false;
                 deadCnt++;
