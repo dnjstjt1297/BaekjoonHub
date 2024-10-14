@@ -46,10 +46,11 @@ public class Main {
         }
 
         ArrayList<int[]> route = findRouteOfMedusa(board,N,sx,sy,ex,ey);
-        
         sight = new boolean[N][N];
-        
+
+        if(route.isEmpty()) System.out.println(-1);
         for(int[] r : route){
+            if(r[0]== sx && r[1] == sy) continue;
             if(r[0]== ex && r[1] == ey){
                 System.out.println(0);
                 break;
@@ -66,36 +67,42 @@ public class Main {
         
     }
 
-    public static ArrayList<int[]> findRouteOfMedusa(int[][] board,int N, int sx, int sy, int ex, int ey){
-        Queue<int[]> q1 = new LinkedList<>();
-        q1.add(new int[]{sx,sy});
+    public static ArrayList<int[]> findRouteOfMedusa(int[][] board, int N, int sx, int sy, int ex, int ey) {
         
+        Queue<int[]> q1 = new LinkedList<>();
+        q1.add(new int[]{sx, sy});
+        
+        boolean[][] visited = new boolean[N][N];
+        visited[sx][sy] = true; 
         ArrayList<int[]> route = new ArrayList<>();
+        route.add(new int[]{sx, sy}); 
+        
         Queue<ArrayList<int[]>> q2 = new LinkedList<>();
         q2.add(route);
 
-        while(!q1.isEmpty()){
+        while (!q1.isEmpty()) {
             int[] cm = q1.poll();
             ArrayList<int[]> cr = q2.poll();
 
-            if(cm[0]==ex && cm[1]==ey){
+            if (cm[0] == ex && cm[1] == ey) {
                 return cr;
             }
-            
-            for(int i =0;i<4;i++){
-                int nx = cm[0]+dx[i];
-                int ny = cm[1]+dy[i];
-                if(nx<0||ny<0||nx>=N||ny>=N) continue;
-                if(board[nx][ny]==1) continue;
-                q1.add(new int[]{nx,ny});
+
+            for (int i = 0; i < 4; i++) {
+                int nx = cm[0] + dx[i];
+                int ny = cm[1] + dy[i];
+                
+                if (nx < 0 || ny < 0 || nx >= N || ny >= N || visited[nx][ny] || board[nx][ny] == 1) continue;
+                
+                q1.add(new int[]{nx, ny});
                 ArrayList<int[]> nr = new ArrayList<>(cr);
-                nr.add(new int[]{nx,ny});
+                nr.add(new int[]{nx, ny});
                 q2.add(nr);
+                visited[nx][ny] = true; 
             }
         }
 
-
-        return route;
+        return new ArrayList<>();
     }
 
 
