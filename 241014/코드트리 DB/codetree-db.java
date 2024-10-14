@@ -56,7 +56,7 @@ public class Main {
     public static void delete(ArrayList<Entry> DB, String name){
         for(Entry e: DB){
             if(e.name.equals(name)){
-                System.out.println(1);
+                System.out.println(e.value);
                 DB.remove(e);
                 return;
             }
