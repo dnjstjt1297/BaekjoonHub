@@ -72,7 +72,6 @@ public class Main {
         int answer = bfs(board,uSpace,abnormals,N,M,F);
         System.out.println(answer);
 
-
     }
 
     public static int[][] initBorad(int[][][] tBlock, int[][] uSpace, int N, int M){
@@ -172,6 +171,8 @@ public class Main {
             }
         });
 
+        
+
         boolean[][] visited = new boolean[N+2*M][N+2*M]; 
         Queue<Person> q = new LinkedList<>();
         q.add(new Person(sx,sy,0));
@@ -202,36 +203,36 @@ public class Main {
     public static Person findNextLocation(int[][] board, ArrayList<int[]> abnormalInfos, int d, int nx, int ny, int time, int bx, int by, int N, int M){
         if(nx<0|| ny<0||nx>=N+2*M||ny>=N+2*M) return new Person(-1,-1,-1);
 
-        if(nx>=bx && nx<bx+M && ny == by+M-1){ //북->서
+        if(nx>=bx && nx<bx+M && ny == by+M-1 && d==1){ //북->서
             ny = by+M-Math.abs(bx+M-nx);
             nx = bx+M;
         }
-        else if(nx>=bx && nx<bx+M && ny == by+2*M){ //북->동
+        else if(nx>=bx && nx<bx+M && ny == by+2*M && d==0){ //북->동
             ny = by+2*M-1+Math.abs(bx+M-nx);
             nx = bx+M;
         }
-        else if(nx>=bx+2*M && nx<bx+3*M && ny == by+M-1){ //남->서
+        else if(nx>=bx+2*M && nx<bx+3*M && ny == by+M-1 && d==1){ //남->서
             ny = by+M-Math.abs(bx+2*M-1-nx);
             nx = bx+2*M-1;
         }
-        else if(nx>=bx+2*M && nx<bx+3*M && ny == by+2*M){ //남->동
+        else if(nx>=bx+2*M && nx<bx+3*M && ny == by+2*M && d==0){ //남->동
             ny = by+2*M-1+Math.abs(bx+2*M-1-nx);
             nx = bx+2*M-1;
         }
-        else if(ny>=by && ny<by+M && nx == bx+M-1){ //서->북
+        else if(ny>=by && ny<by+M && nx == bx+M-1 && d==3){ //서->북
             nx = bx+M-Math.abs(by+M-ny);
             ny = by+M;
         }
-        else if(ny>=by && ny<by+M && nx == bx+2*M){ //서->남
+        else if(ny>=by && ny<by+M && nx == bx+2*M && d==2){ //서->남
             nx = bx+2*M-1+Math.abs(by+M-ny);
             ny = by+M;
         }
-        else if(ny>=by+2*M && ny<by+3*M && nx == bx+M-1){ //동->북
+        else if(ny>=by+2*M && ny<by+3*M && nx == bx+M-1 && d==3){ //동->북
             nx = bx+M-Math.abs(by+2*M-1-ny);
             ny = by+2*M-1;
         }
-        else if(ny>=by+2*M && ny<by+3*M && nx == bx+2*M){ //동->남
-            nx = bx+2*M-1+Math.abs(by+2*M-ny);
+        else if(ny>=by+2*M && ny<by+3*M && nx == bx+2*M && d==2){ //동->남
+            nx = bx+2*M-1+Math.abs(by+2*M-1-ny);
             ny = by+2*M-1;
         }
         else{
@@ -279,7 +280,7 @@ public class Main {
                 ny = ny+dy[d];
                 if(nx<0||ny<0||nx>=N+2*M||ny>=N+2*M) break;
                 if(board[nx][ny]==5) continue;
-                if(board[nx][ny]!=1) info.add(new int[] {nx,ny,cnt*abnormals[i].t});
+                if(board[nx][ny]==0) info.add(new int[] {nx,ny,cnt*abnormals[i].t});
                 else break;
                 cnt++;
             }
