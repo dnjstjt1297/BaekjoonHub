@@ -3,18 +3,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-class Node{
+class Node {
     int id;
-    int x,y,z;
-    public Node(int id, int x, int y, int z) {
+    int[] loc;
+    public Node(int id, int[] loc) {
         this.id = id;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.loc = loc;
     }
 }
 
 public class Main {
+    static final int dimension = 3;
     static int[] parent;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,24 +24,39 @@ public class Main {
         for(int i = 0; i < N; i++) {
             parent[i] = i;
         }
-        Node[] nodes1 = new Node[N];
-        Node[] nodes2 = new Node[N];
-        Node[] nodes3 = new Node[N];
+        Node[] nodes = new Node[N];
         for(int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
-            int z = Integer.parseInt(st.nextToken());
-            nodes1[i] = new Node(i, x, y, z);
-            nodes2[i] = new Node(i, x, y, z);
-            nodes3[i] = new Node(i, x, y, z);
+            int[] loc = new int[dimension];
+            for(int j = 0; j < dimension; j++) {
+                loc[j] = Integer.parseInt(st.nextToken());
+            }
+            nodes[i] = new Node(i, loc);
         }
-        Arrays.sort(nodes1, Comparator.comparingInt(s -> s.x));
-        Arrays.sort(nodes2, Comparator.comparingInt(s -> s.y));
-        Arrays.sort(nodes3, Comparator.comparingInt(s -> s.z));
+        Node[][] sortedNodes = makeSortedNodes(nodes);
+        PriorityQueue<int[]> pq = makeEdges(sortedNodes);
+        int result = kruskal(pq);
+        System.out.println(result);
+    }
+    public static Node[][] makeSortedNodes(Node[] nodes) {
+        Node[][] result = new Node[dimension][];
+        for(int i = 0; i < dimension; i++) {
+            result[i] = cloneNode(nodes);
+            int finalI = i;
+            Arrays.sort(result[i], Comparator.comparingInt(node -> node.loc[finalI]));
+        }
+        return result;
+    }
 
-        PriorityQueue<int[]> pq = makeEdges(nodes1,nodes2,nodes3);
+    public static Node[] cloneNode(Node[] nodes) {
+        Node[] clone = new Node[nodes.length];
+        for(int i = 0; i < nodes.length; i++) {
+            clone[i] = new Node(nodes[i].id, nodes[i].loc);
+        }
+        return clone;
+    }
 
+    public static int kruskal(PriorityQueue<int[]> pq) {
         int result = 0;
         while(!pq.isEmpty()) {
             int[] edge = pq.poll();
@@ -51,22 +65,18 @@ public class Main {
                 result+=edge[2];
             }
         }
-        System.out.println(result);
+        return result;
     }
 
-    public static PriorityQueue<int[]> makeEdges(Node[] ... nodes){
-        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[2]-o2[2]);
-
-        for(int i =0; i<3; i++) {
+    public static PriorityQueue<int[]> makeEdges(Node[][]nodes){
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(o -> o[2]));
+        for(int i =0; i<dimension; i++) {
             for(int j = 1; j<nodes[i].length;j++){
-                if(i==0) pq.add(new int[]{nodes[i][j-1].id, nodes[i][j].id, Math.abs(nodes[i][j].x-nodes[i][j-1].x)});
-                else if(i==1) pq.add(new int[]{nodes[i][j-1].id, nodes[i][j].id, Math.abs(nodes[i][j].y-nodes[i][j-1].y)});
-                else if(i==2) pq.add(new int[]{nodes[i][j-1].id, nodes[i][j].id, Math.abs(nodes[i][j].z-nodes[i][j-1].z)});
+                pq.add(new int[]{nodes[i][j-1].id, nodes[i][j].id, Math.abs(nodes[i][j].loc[i]-nodes[i][j-1].loc[i])});
             }
         }
         return pq;
     }
-
     public static int find(int n){
         if(parent[n] == n) return n;
         n = find(parent[n]);
