@@ -1,6 +1,6 @@
 # [level 1] 잔챙이 잡은 수 구하기 - 293258 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/293258) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/293258#qna) 
 
 ### 성능 요약
 
@@ -12,11 +12,11 @@
 
 ### 채점결과
 
-합계: 85.0 / 100.0
+합계: 100.0 / 100.0
 
 ### 제출 일자
 
-2025년 02월 28일 09:20:40
+2025년 02월 28일 09:23:49
 
 ### 문제 설명
 
