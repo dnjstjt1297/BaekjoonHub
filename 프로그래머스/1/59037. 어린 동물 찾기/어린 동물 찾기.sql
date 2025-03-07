@@ -1,0 +1,3 @@
+SELECT ANIMAL_ID, NAME FROM ANIMAL_INS
+where intake_condition != 'Aged'
+ORDER BY ANIMAL_ID
