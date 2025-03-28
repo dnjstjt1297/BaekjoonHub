@@ -1,6 +1,6 @@
 # [Gold IV] 고층 건물 - 1027 
 
-[문제 링크](https://www.acmicpc.net/problem/1027) 
+[문제 링크] (https://www.acmicpc.net/problem/1027) 
 
 ### 성능 요약
 
