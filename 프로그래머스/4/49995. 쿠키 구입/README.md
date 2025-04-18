@@ -1,6 +1,6 @@
 # [level 4] 쿠키 구입 - 49995 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/49995) 
+[문제 링크] (https://school.programmers.co.kr/learn/courses/30/lessons/49995) 
 
 ### 성능 요약
 
