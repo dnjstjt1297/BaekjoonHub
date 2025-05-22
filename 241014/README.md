@@ -9,7 +9,7 @@
 |---|---|---|---|---|---|
 |기출문제|[메두사와 전사들](https://www.codetree.ai/training-field/frequent-problems/problems/medusa-and-warriors)|![Gold1][g1]|`BFS` `Simulation`|![Passed][passed]|[링크](https://github.com/dnjstjt1297/BaekjoonHub/blob/main/241014/%EB%A9%94%EB%91%90%EC%82%AC%EC%99%80%20%EC%A0%84%EC%82%AC%EB%93%A4/medusa-and-warriors.java)|
 |기출문제|[코드트리 DB](https://www.codetree.ai/training-field/frequent-problems/problems/codetree-db)|![Platinum2][p2]|`Dynamic Segment Tree`|![Failed][failed]|[링크](https://github.com/dnjstjt1297/BaekjoonHub/blob/main/241014/%EC%BD%94%EB%93%9C%ED%8A%B8%EB%A6%AC%20DB/codetree-db.java)|
- 
+  
 
 
 
