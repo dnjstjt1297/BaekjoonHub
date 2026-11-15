@@ -10,7 +10,7 @@ class Solution {
 		
 		for(int test_case = 1; test_case <= T; test_case++) {
 			int N =sc.nextInt();
-			int K = sc.nextInt();
+			int K = sc.nextInt();  
 			if(N%K!=0) {
 				System.out.println("#"+test_case+" 1");
 			}
